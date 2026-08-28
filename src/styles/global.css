@@ -219,6 +219,9 @@ img {
   .card:hover, .slide:hover {
     transform: none;
   }
+  .card-go, .card:hover .card-go {
+    transform: none;
+  }
   .rail-sticky {
     position: static;
     height: auto;
@@ -569,31 +572,14 @@ section {
   transition: transform .22s var(--ease-out), box-shadow .22s var(--ease-out), border-color .22s var(--ease-out);
 }
 
-.card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  z-index: 2;
-  background: linear-gradient(90deg, var(--accent-top), var(--accent-bot));
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform .35s var(--ease-out);
-}
-
 .card:hover {
   transform: translateY(-4px);
   box-shadow: var(--sh-2);
   border-color: var(--line-2);
 }
 
-.card:hover::before {
-  transform: scaleX(1);
-}
-
 .card-img {
+  position: relative;
   aspect-ratio: 3 / 2;
   overflow: hidden;
   background: var(--bg-2);
@@ -618,19 +604,42 @@ section {
   flex: 1;
 }
 
+/* circle resting in the cover image's bottom-right corner, revealed on hover */
+.card-go {
+  position: absolute;
+  right: var(--s-4);
+  bottom: var(--s-4);
+  transform: scale(.9);
+  width: 44px;
+  height: 44px;
+  border-radius: var(--r-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--sh-1);
+  color: var(--accent);
+  opacity: 0;
+  transition: opacity .15s var(--ease-out), transform .15s var(--ease-out);
+}
+
+.card-go svg {
+  width: 18px;
+  height: 18px;
+}
+
+.card:hover .card-go {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity .22s var(--ease-out), transform .22s var(--ease-out);
+}
+
 .card-top {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: var(--s-4);
-}
-
-.card-top h3 {
-  transition: color .18s var(--ease-out);
-}
-
-.card:hover .card-top h3 {
-  color: var(--accent);
 }
 
 .card-year {
@@ -844,32 +853,13 @@ section {
   align-items: flex-start;
   justify-content: space-between;
   gap: var(--s-4);
-  position: relative;
-  overflow: hidden;
   transition: transform .22s var(--ease-out), box-shadow .22s var(--ease-out), border-color .22s var(--ease-out);
-}
-
-.job::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  background: linear-gradient(180deg, var(--accent-top), var(--accent-bot));
-  transform: scaleY(0);
-  transform-origin: top;
-  transition: transform .3s var(--ease-out);
 }
 
 .job:hover {
   transform: translateY(-2px);
   box-shadow: var(--sh-1);
   border-color: var(--line-2);
-}
-
-.job:hover::before {
-  transform: scaleY(1);
 }
 
 .job-name {
@@ -898,10 +888,6 @@ section {
 /* current role */
 .job--now {
   border-color: var(--accent-line);
-}
-
-.job--now::before {
-  transform: scaleY(1);
 }
 
 .job--now .job-name {
