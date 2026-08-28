@@ -1,0 +1,26 @@
+---
+---
+
+<footer>
+  <div class="wrap foot">
+    <span>© 2026 Santiago Castillo</span>
+    <span class="foot-meta">
+      <span>Córdoba, Argentina</span>
+      <time id="clock" datetime="">--:--</time>
+    </span>
+  </div>
+</footer>
+
+<script is:inline>
+(function(){
+  /* local time, real information for a remote recruiter */
+  var clock = document.getElementById('clock');
+  function tick(){
+    var d = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Argentina/Cordoba' }));
+    var hh = String(d.getHours()).padStart(2,'0'), mm = String(d.getMinutes()).padStart(2,'0');
+    clock.textContent = hh + ':' + mm;
+    clock.setAttribute('datetime', hh + ':' + mm);
+  }
+  tick(); setInterval(tick, 30000);
+})();
+</script>

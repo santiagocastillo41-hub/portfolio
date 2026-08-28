@@ -1,0 +1,58 @@
+---
+import { Image } from 'astro:assets';
+import bancorCurrencyExchange from '../assets/bancor-currency-exchange.png';
+import bancorBusinessCards from '../assets/bancor-business-cards.png';
+import peopledesk from '../assets/peopledesk.png';
+import strand from '../assets/strand.png';
+---
+
+<section class="sec" id="work">
+  <div class="wrap">
+    <div class="sec-head rise">
+      <div>
+        <span class="eyebrow">Selected work</span>
+        <h2>Designed, built and shipped</h2>
+      </div>
+      <span class="side">4 case studies</span>
+    </div>
+    <div class="work">
+
+      <a class="card rise" href="#">
+        <div class="card-img"><Image src={bancorCurrencyExchange} alt="Bancor currency exchange flow on mobile" width={1040} height={693} loading="lazy" /></div>
+        <div class="card-body">
+          <div class="card-top"><h3>Bancor Currency Exchange</h3><span class="card-year">2026</span></div>
+          <p class="card-desc">Foreign currency exchange for retail banking. From balance to settled trade in a single flow, with instant accreditation.</p>
+          <div class="chips"><span class="chip">Product Design</span><span class="chip">Fintech</span><span class="chip">Mobile</span></div>
+        </div>
+      </a>
+
+      <a class="card rise" href="#">
+        <div class="card-img"><Image src={bancorBusinessCards} alt="Bancor corporate card management dashboard" width={1040} height={693} loading="lazy" /></div>
+        <div class="card-body">
+          <div class="card-top"><h3>Bancor Business Cards</h3><span class="card-year">2026</span></div>
+          <p class="card-desc">Corporate card management for business clients. Limits, users and spend visibility unified in one dashboard.</p>
+          <div class="chips"><span class="chip">Product Design</span><span class="chip">Enterprise</span><span class="chip">Design System</span></div>
+        </div>
+      </a>
+
+      <a class="card rise" href="#">
+        <div class="card-img"><Image src={peopledesk} alt="PeopleDesk payroll dashboard" width={1040} height={693} loading="lazy" /></div>
+        <div class="card-body">
+          <div class="card-top"><h3>PeopleDesk</h3><span class="card-year">2024</span></div>
+          <p class="card-desc">HR, payroll and finance unified in one B2B platform. Three flows and fourteen screens, designed end to end.</p>
+          <div class="chips"><span class="chip">B2B SaaS</span><span class="chip">Product Design</span><span class="chip">Lead Designer</span></div>
+        </div>
+      </a>
+
+      <a class="card rise" href="#">
+        <div class="card-img"><Image src={strand} alt="Strand creative performance analytics interface" width={1040} height={693} loading="lazy" /></div>
+        <div class="card-body">
+          <div class="card-top"><h3>Strand</h3><span class="card-year">2025</span></div>
+          <p class="card-desc">Creative performance intelligence. Turning campaign signals into decisions marketing teams can act on.</p>
+          <div class="chips"><span class="chip">Data Visualisation</span><span class="chip">Product Design</span></div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>

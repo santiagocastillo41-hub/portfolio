@@ -1,0 +1,85 @@
+---
+---
+
+<script is:inline>
+(function(){
+
+  /* PINNED CAROUSEL
+     The scene is held by position:sticky while the page scrolls through a
+     tall spacer. Scroll progress through that spacer drives the horizontal
+     position, and each frame eases toward it so the motion has weight
+     instead of being welded to the wheel.
+
+     The scene is exactly one viewport tall, so it always fits and the pin is
+     never skipped. Pin is off only for reduced motion, small screens and very
+     short viewports, and in those cases the track is a plain swipeable rail. */
+  var track = document.getElementById('track');
+  var rail  = document.getElementById('rail');
+  var bar   = document.getElementById('bar');
+
+  if (track && rail) {
+    var PIN_RATIO = 2.6;   /* vertical px of scroll per px of card travel */
+    var EASE      = 0.09;  /* per-frame approach; lower = softer */
+
+    var pinPx = 0, current = 0, target = 0, raf = null, near = false;
+    var manualUntil = 0;
+    var mqSmall  = window.matchMedia('(max-width: 768px)');
+    var mqShort  = window.matchMedia('(max-height: 560px)');
+    var mqMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    ['wheel','touchstart','pointerdown','keydown'].forEach(function(ev){
+      track.addEventListener(ev, function(){ manualUntil = Date.now() + 1200; }, { passive:true });
+    });
+
+    function maxScroll(){ return track.scrollWidth - track.clientWidth; }
+    function pinOff(){ return mqMotion.matches || mqSmall.matches || mqShort.matches; }
+
+    function measure(){
+      if (pinOff()){
+        rail.style.height = '';
+        pinPx = 0;
+        return;
+      }
+      pinPx = Math.max(0, Math.round(maxScroll() * PIN_RATIO));
+      rail.style.height = pinPx > 0 ? 'calc(100vh + ' + pinPx + 'px)' : '';
+    }
+
+    function frame(){
+      if (Date.now() >= manualUntil){
+        current += (target - current) * EASE;
+        if (Math.abs(target - current) < 0.5) current = target;
+        track.scrollLeft = current;
+      } else {
+        current = track.scrollLeft;
+      }
+      if (bar){
+        var m = maxScroll();
+        bar.style.transform = 'scaleX(' + (m > 0 ? current / m : 1) + ')';
+      }
+      raf = (near && Math.abs(target - current) > 0.5) ? requestAnimationFrame(frame) : null;
+    }
+
+    function onScroll(){
+      if (pinPx <= 0) return;
+      var p = Math.max(0, Math.min(1, -rail.getBoundingClientRect().top / pinPx));
+      target = p * maxScroll();
+      if (!raf) raf = requestAnimationFrame(frame);
+    }
+
+    if ('IntersectionObserver' in window){
+      new IntersectionObserver(function(e){
+        near = e[0].isIntersecting;
+        if (near && !raf) raf = requestAnimationFrame(frame);
+      }, { rootMargin: '300px 0px' }).observe(rail);
+    } else { near = true; }
+
+    window.addEventListener('scroll', onScroll, { passive:true });
+    window.addEventListener('resize', function(){ measure(); onScroll(); });
+    if (document.fonts && document.fonts.ready){
+      document.fonts.ready.then(function(){ measure(); onScroll(); });
+    }
+    measure(); onScroll();
+    window.__rail = { rail: rail, track: track, pin: function(){ return pinPx; } };
+  }
+})();
+</script>

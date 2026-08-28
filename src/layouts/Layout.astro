@@ -1,0 +1,29 @@
+---
+import '@fontsource-variable/inter';
+import '../styles/global.css';
+import ScrollReveal from '../components/ScrollReveal.astro';
+
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>{title}</title>
+		<noscript>
+			<style>
+				.rise { opacity: 1 !important; transform: none !important; }
+			</style>
+		</noscript>
+	</head>
+	<body>
+		<slot />
+		<ScrollReveal />
+	</body>
+</html>

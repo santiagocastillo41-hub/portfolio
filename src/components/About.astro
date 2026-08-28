@@ -1,0 +1,72 @@
+---
+import AboutRail from './AboutRail.astro';
+---
+
+<section class="about-band" id="about">
+  <div class="wrap">
+    <div class="rail" id="rail">
+      <div class="rail-sticky">
+        <div class="inner">
+          <span class="eyebrow">About me</span>
+          <h2>Mindset, methods and experience</h2>
+          <p class="about-lead" style="margin-top:var(--s-4)">Four things worth knowing before we talk.</p>
+
+          <div class="track" id="track" tabindex="0" role="region" aria-label="About Santiago">
+
+          <article class="slide">
+            <span class="slide-label">Background</span>
+            <h3>Six years in fintech and banking</h3>
+            <p>Based in Córdoba, Argentina, designing digital products across fintech, banking and SaaS, with startups and established companies in Latin America and the US. Currently at Banco de Córdoba, leading UX for corporate banking.</p>
+          </article>
+
+          <article class="slide">
+            <span class="slide-label">What I do</span>
+            <h3>Clarity out of complexity</h3>
+            <p>I help product teams find clarity in complexity and turn it into experiences that are intuitive, purposeful and built to scale, through UX strategy, interaction design and design systems.</p>
+          </article>
+
+          <article class="slide">
+            <span class="slide-label">My approach</span>
+            <h3>Problem first, screens second</h3>
+            <p>Good design starts with understanding the problem, not jumping to solutions. I work closely with developers, ask the hard questions early, and care about systems thinking, because a great experience is never one screen.</p>
+          </article>
+
+          <article class="slide slide--accent">
+            <span class="slide-label">Working with AI</span>
+            <h3>Prototypes, not just mockups</h3>
+            <p>I build working prototypes in Astro and Three.js using Cursor, Claude Code and Figma MCP. Instead of handing over static frames, I hand over something the team can open, click and test. Fewer handoff gaps, faster decisions.</p>
+          </article>
+
+          </div>
+          <div class="rail-progress" aria-hidden="true"><span id="bar"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="exp rise">
+      <h3>My experience</h3>
+      <div class="career">
+        <div class="job job--now">
+          <div><div class="job-name">Banco de Córdoba</div><div class="job-role">Product Designer, UX/UI</div></div>
+          <div class="job-date"><i aria-hidden="true"></i>2025 - Now</div>
+        </div>
+        <div class="job">
+          <div><div class="job-name">Devlights</div><div class="job-role">Product Designer, UX/UI</div></div>
+          <div class="job-date">2022 - 2025</div>
+        </div>
+        <div class="job">
+          <div><div class="job-name">Upwork</div><div class="job-role">Top Rated UX/UI Designer, Freelance</div></div>
+          <div class="job-date">2021 - 2025</div>
+        </div>
+        <div class="job">
+          <div><div class="job-name">Madketing</div><div class="job-role">UX/UI Designer</div></div>
+          <div class="job-date">2020 - 2021</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <AboutRail />
+</section>

@@ -1,0 +1,29 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "bounce-easing",
+        "value": "cubic-bezier(.34, 1.4, .64, 1)",
+        "createdAt": "2026-08-27T23:09:01.627Z",
+        "reason": "user confirmed: --spring token ported verbatim from finished referencia/home.html design, user asked to transfer all easings tal cual"
+      },
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "createdAt": "2026-08-28T02:33:06.819Z",
+        "reason": "user confirmed: explicitly directed the switch from Clash Grotesk to Inter, with updated referencia/home.html as source of truth"
+      },
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "src/styles/global.css"
+        ],
+        "createdAt": "2026-08-28T02:47:51.009Z",
+        "reason": "user confirmed: .card::before is a 3px full-width top accent revealed on hover (scaleX 0->1), ported verbatim from referencia/home.html which the user set as source of truth"
+      }
+    ]
+  }
+}

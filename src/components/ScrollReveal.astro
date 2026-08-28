@@ -1,0 +1,27 @@
+---
+---
+
+<script is:inline>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* scroll reveal, transform + opacity only, staggered by sibling index */
+  var items = document.querySelectorAll('.rise');
+  if (reduce || !('IntersectionObserver' in window)) {
+    items.forEach(function(el){ el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (!e.isIntersecting) return;
+        var group = Array.prototype.filter.call(
+          e.target.parentNode.children, function(c){ return c.classList.contains('rise'); });
+        var i = group.indexOf(e.target);
+        e.target.style.transitionDelay = (i > 0 ? Math.min(i,4) * 60 : 0) + 'ms';
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+    items.forEach(function(el){ io.observe(el); });
+  }
+})();
+</script>

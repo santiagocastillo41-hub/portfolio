@@ -1,0 +1,23 @@
+---
+import { Image } from 'astro:assets';
+import portrait from '../assets/portrait.jpg';
+---
+
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="rise">
+        <span class="status"><i></i>Available for new projects</span>
+        <h1>I design digital products and <span class="accent-word"><span>ship them</span></span>.</h1>
+        <p class="hero-sub">Senior Product Designer. Six years across fintech, banking and B2B SaaS with teams in Latin America and the US.</p>
+        <div class="hero-cta">
+          <a href="#work" class="btn btn-ghost">See selected work</a>
+          <a href="#contact" class="btn btn-primary">Get in touch</a>
+        </div>
+      </div>
+      <div class="portrait rise">
+        <Image src={portrait} alt="Portrait of Santiago Castillo" width={472} height={472} loading="eager" />
+      </div>
+    </div>
+  </div>
+</header>
