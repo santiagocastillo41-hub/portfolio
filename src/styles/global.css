@@ -723,13 +723,6 @@ section {
   flex-direction: column;
   gap: var(--s-4);
   min-height: 280px;
-  transition: transform .3s var(--ease-out), box-shadow .3s var(--ease-out), border-color .3s var(--ease-out);
-}
-
-.slide:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--sh-2);
-  border-color: var(--line-2);
 }
 
 .slide-label {
