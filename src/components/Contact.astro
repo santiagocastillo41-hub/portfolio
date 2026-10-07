@@ -1,4 +1,6 @@
 ---
+import { CV_URL, hasCV } from '../lib/cv';
+const EMAIL = 'santiagocastillo41@gmail.com';
 ---
 
 <section class="contact" id="contact">
@@ -7,7 +9,75 @@
       <span class="eyebrow">Contact</span>
       <h2>Let's build something.</h2>
       <p class="lead" style="margin-top:var(--s-4)">Open to product design roles, remote or relocation.</p>
-      <a class="btn btn-primary" href="mailto:santiagocastillo41@gmail.com">santiagocastillo41@gmail.com</a>
+
+      <div class="mailbox">
+        <span class="mail-addr">{EMAIL}</span>
+        <button class="copy" type="button" data-email={EMAIL} aria-label="Copy email address">
+          <span class="copy-ico" aria-hidden="true">
+            <svg class="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2.5" /><path d="M15 9V6.5A2.5 2.5 0 0 0 12.5 4h-6A2.5 2.5 0 0 0 4 6.5v6A2.5 2.5 0 0 0 6.5 15H9" /></svg>
+            <svg class="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
+          </span>
+          <span class="copy-lbl" aria-hidden="true"><span class="l1">Copy email</span><span class="l2">Copied</span></span>
+        </button>
+      </div>
+
+      <div class="contact-alt">
+        <a href={`mailto:${EMAIL}`}>Open in mail app</a>
+        {hasCV && (
+          <a href={CV_URL} class="btn-cv" download>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0l-4.5-4.5M12 15l4.5-4.5M5 19h14" /></svg>
+            Download CV
+          </a>
+        )}
+      </div>
+      <p class="sr-only" aria-live="polite" id="copy-status"></p>
     </div>
   </div>
 </section>
+
+<script is:inline>
+(function(){
+  /* Copy email. The address stays visible as text so it can always be read
+     and selected; the button copies it and confirms in place for 1.8s. The
+     live region announces it to screen readers. */
+  var btn = document.querySelector('.copy');
+  var status = document.getElementById('copy-status');
+  if (!btn) return;
+  var timer;
+
+  function fallbackCopy(text){
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+    return ok;
+  }
+
+  function confirmCopy(){
+    btn.classList.add('copied');
+    status.textContent = 'Email address copied to clipboard';
+    clearTimeout(timer);
+    timer = setTimeout(function(){
+      btn.classList.remove('copied');
+      status.textContent = '';
+    }, 1800);
+  }
+
+  btn.addEventListener('click', function(){
+    var text = btn.dataset.email;
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(confirmCopy, function(){
+        if (fallbackCopy(text)) confirmCopy();
+      });
+    } else if (fallbackCopy(text)) {
+      confirmCopy();
+    }
+  });
+})();
+</script>

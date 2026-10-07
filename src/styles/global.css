@@ -21,13 +21,13 @@
   --accent-line: rgba(255, 74, 0, .22);
   --ok: #16A34A;
 
-  /* type - 1.25 scale, Clash Grotesk (200-700) */
+  /* type - Geist for text, Schibsted Grotesk for headings */
   --t-xs: 12px;
   --t-sm: 15px;
   --t-base: 17px;
   --t-lg: 21px;
-  --t-xl: 34px;
-  --t-display: clamp(40px, 5.4vw, 60px);
+  --t-xl: 30px;
+  --t-display: clamp(38px, 4.6vw, 52px);
 
   /* spacing - 8pt grid */
   --s-1: 4px;
@@ -92,7 +92,7 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: 'Inter Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: 'Geist Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-size: var(--t-base);
   line-height: 1.6;
   letter-spacing: -.006em;
@@ -117,31 +117,86 @@ body > * {
   z-index: 1;
 }
 
-/* Inter is a variable face spanning 100-900, so weight is available again as
-   a hierarchy tool. Its optical sizing runs wide at display sizes, hence the
-   tighter tracking on h1 than the Clash version used. */
+/* Ambient background. Three soft radial gradients drift very slowly behind
+   the page. Only transform is animated, so it stays on the compositor and
+   never triggers a repaint. The softness lives in the gradient itself; no
+   filter: blur, which would be expensive on elements this large. */
+.ambient {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.ambient span {
+  position: absolute;
+  border-radius: 50%;
+  will-change: transform;
+}
+
+.ambient-a1 {
+  width: 62vw;
+  height: 62vw;
+  left: -14vw;
+  top: -26vw;
+  background: radial-gradient(circle at center, rgba(255, 95, 0, .13), rgba(255, 95, 0, 0) 62%);
+  animation: ambient-drift-1 34s ease-in-out infinite alternate;
+}
+
+.ambient-a2 {
+  width: 52vw;
+  height: 52vw;
+  right: -18vw;
+  top: 14vh;
+  background: radial-gradient(circle at center, rgba(255, 46, 0, .08), rgba(255, 46, 0, 0) 62%);
+  animation: ambient-drift-2 42s ease-in-out infinite alternate;
+}
+
+.ambient-a3 {
+  width: 58vw;
+  height: 58vw;
+  left: 18vw;
+  top: 58vh;
+  background: radial-gradient(circle at center, rgba(161, 161, 170, .16), rgba(161, 161, 170, 0) 62%);
+  animation: ambient-drift-3 48s ease-in-out infinite alternate;
+}
+
+@keyframes ambient-drift-1 { to { transform: translate3d(12vw, 10vh, 0) scale(1.08); } }
+@keyframes ambient-drift-2 { to { transform: translate3d(-10vw, -8vh, 0) scale(.94); } }
+@keyframes ambient-drift-3 { to { transform: translate3d(-8vw, -12vh, 0) scale(1.06); } }
+
+@media (prefers-color-scheme: dark) {
+  .ambient-a1 { opacity: .7; }
+  .ambient-a2 { opacity: .7; }
+  .ambient-a3 { opacity: .35; }
+}
+
+/* Headings: Schibsted Grotesk at semibold. Lighter than the 800 the Inter
+   version used, so the orange clause in the hero carries the weight instead
+   of competing with a heavy black block. */
 h1, h2, h3 {
   margin: 0;
-  font-weight: 800;
+  font-family: 'Schibsted Grotesk Variable', 'Geist Variable', sans-serif;
+  font-weight: 600;
 }
 
 h1 {
   font-size: var(--t-display);
-  line-height: 1.04;
-  letter-spacing: -.034em;
+  line-height: 1.08;
+  letter-spacing: -.028em;
 }
 
 h2 {
   font-size: var(--t-xl);
-  line-height: 1.15;
-  letter-spacing: -.026em;
+  line-height: 1.18;
+  letter-spacing: -.02em;
 }
 
 h3 {
   font-size: var(--t-lg);
   line-height: 1.28;
-  letter-spacing: -.016em;
-  font-weight: 700;
+  letter-spacing: -.014em;
 }
 
 p {
@@ -226,6 +281,9 @@ img {
     position: static;
     height: auto;
   }
+  .ambient span {
+    animation: none;
+  }
 }
 
 /* ============================================================
@@ -307,6 +365,51 @@ img {
   background: var(--bg-2);
 }
 
+/* Active section: filled pill plus a small accent dot under the label.
+   Toggled by the IntersectionObserver in Nav.astro. */
+.nav-links a {
+  position: relative;
+}
+
+.nav-links a.is-active {
+  color: var(--text);
+  background: var(--bg-2);
+}
+
+.nav-links a.is-active::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 5px;
+  width: 4px;
+  height: 4px;
+  margin-left: -2px;
+  border-radius: var(--r-full);
+  background: var(--accent);
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+
+.btn-cv svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform .2s var(--ease-out);
+}
+
+/* the arrow nudges down on hover: says "download" without changing the label */
+.btn-cv:hover svg {
+  transform: translateY(2px);
+}
+
 /* ============================================================
    BUTTONS
    ============================================================ */
@@ -370,6 +473,10 @@ img {
    HERO - headline is a statement, the name lives in the nav
    ============================================================ */
 .hero {
+  /* the glow behind the portrait bleeds past the gutter at ~1024px;
+     clip keeps it from creating a horizontal scroll without making
+     .hero a scroll container */
+  overflow-x: clip;
   padding: var(--s-9) 0 var(--s-8);
 }
 
@@ -413,6 +520,7 @@ img {
    Descenders would be clipped by the mask, hence the padding/margin pair. */
 .accent-word {
   display: inline-block;
+  white-space: nowrap; /* "ship them" always travels as one unit */
   overflow: hidden;
   vertical-align: bottom;
   padding-bottom: .14em;
@@ -932,6 +1040,114 @@ section {
   font-size: var(--t-lg);
 }
 
+/* Copy email. The address is plain text; the button copies it and confirms
+   in place: copy icon crossfades to a check, label swaps to "Copied". Both
+   labels share one grid cell so the button never changes width. */
+.mailbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 6px 6px 22px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-full);
+  box-shadow: var(--sh-1);
+}
+
+.mail-addr {
+  font-size: var(--t-base);
+  font-weight: 600;
+  letter-spacing: -.01em;
+  user-select: all;
+}
+
+.copy {
+  height: 44px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: var(--r-full);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  color: #fff;
+  background: linear-gradient(180deg, var(--accent-top), var(--accent-bot));
+  box-shadow: var(--sh-accent);
+  transition: transform .18s var(--ease-out), box-shadow .18s var(--ease-out);
+}
+
+.copy:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(255, 74, 0, .34);
+}
+
+.copy:active {
+  transform: scale(.97);
+}
+
+.copy-ico {
+  position: relative;
+  width: 18px;
+  height: 18px;
+}
+
+.copy-ico svg {
+  position: absolute;
+  inset: 0;
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: opacity .2s var(--ease-out), transform .25s var(--ease-out);
+}
+
+.copy .i-check { opacity: 0; transform: scale(.6); }
+.copy.copied .i-copy { opacity: 0; transform: scale(.6); }
+.copy.copied .i-check { opacity: 1; transform: none; }
+
+.copy-lbl {
+  display: inline-grid;
+}
+
+.copy-lbl span {
+  grid-area: 1 / 1;
+  transition: opacity .2s var(--ease-out), transform .25s var(--ease-out);
+}
+
+.copy-lbl .l2 { opacity: 0; transform: translateY(6px); }
+.copy.copied .copy-lbl .l1 { opacity: 0; transform: translateY(-6px); }
+.copy.copied .copy-lbl .l2 { opacity: 1; transform: none; }
+
+.contact-alt {
+  margin-top: var(--s-5);
+  display: flex;
+  justify-content: center;
+  gap: var(--s-5);
+  font-size: var(--t-sm);
+  color: var(--text-2);
+}
+
+.contact-alt a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: underline;
+  text-decoration-color: var(--line-2);
+  text-underline-offset: 4px;
+  transition: color .18s var(--ease-out), text-decoration-color .18s var(--ease-out);
+}
+
+.contact-alt a:hover {
+  color: var(--text);
+  text-decoration-color: var(--accent);
+}
+
 footer {
   border-top: 1px solid var(--line);
   padding: var(--s-5) 0 var(--s-7);
@@ -975,11 +1191,17 @@ footer {
 @media (max-width: 768px) {
   :root {
     --t-lg: 18px;
-    --t-xl: 27px;
+    --t-xl: 26px;
     --s-9: 64px;
   }
   .nav-id span {
     display: none;
+  }
+  .nav {
+    gap: var(--s-3);
+  }
+  .nav-cv {
+    display: none; /* still reachable from the contact section */
   }
   .nav-links a {
     padding: 10px var(--s-2);
@@ -1054,6 +1276,25 @@ footer {
   .foot {
     flex-direction: column;
     align-items: flex-start;
+    gap: var(--s-3);
+  }
+  .mailbox {
+    flex-direction: column;
+    width: 100%;
+    padding: var(--s-4);
+    gap: var(--s-3);
+    border-radius: var(--r-lg);
+  }
+  .mail-addr {
+    font-size: var(--t-sm);
+  }
+  .copy {
+    width: 100%;
+    justify-content: center;
+  }
+  .contact-alt {
+    flex-direction: column;
+    align-items: center;
     gap: var(--s-3);
   }
 }
