@@ -1,16 +1,60 @@
 ---
+import { CV_URL, hasCV } from '../lib/cv';
 ---
 
 <div class="nav-outer">
-  <nav class="nav">
+  <nav class="nav" aria-label="Main">
     <div class="nav-id">
       <span class="mark" aria-hidden="true">SC</span>
       <span>Santiago Castillo</span>
     </div>
     <div class="nav-links">
-      <a href="#work">Work</a>
-      <a href="#about">About</a>
+      <a href="#work" data-section="work">Work</a>
+      <a href="#about" data-section="about">About</a>
     </div>
-    <a href="#contact" class="btn btn-primary btn-sm">Get in touch</a>
+    <div class="nav-actions">
+      {hasCV && (
+        <a href={CV_URL} class="btn btn-ghost btn-sm btn-cv nav-cv" download>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0l-4.5-4.5M12 15l4.5-4.5M5 19h14" /></svg>
+          <span>CV</span>
+        </a>
+      )}
+      <a href="#contact" class="btn btn-primary btn-sm">Get in touch</a>
+    </div>
   </nav>
 </div>
+
+<script is:inline>
+/* Runs after the whole document is parsed: this script sits right after the
+   nav, before the sections it needs to observe exist in the DOM. */
+document.addEventListener('DOMContentLoaded', function(){
+  /* Active section. Whichever observed block crosses the vertical middle of
+     the viewport decides the pill. The hero and the facts strip count as
+     "no section", so the pill clears when you scroll back above Work. */
+  var links = document.querySelectorAll('.nav-links a[data-section]');
+  if (!links.length || !('IntersectionObserver' in window)) return;
+  var known = {};
+  links.forEach(function(a){ known[a.dataset.section] = true; });
+
+  function setActive(id){
+    links.forEach(function(a){
+      var on = a.dataset.section === id;
+      a.classList.toggle('is-active', on);
+      if (on) a.setAttribute('aria-current', 'true');
+      else a.removeAttribute('aria-current');
+    });
+  }
+
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting) setActive(known[e.target.id] ? e.target.id : null);
+    });
+  }, { rootMargin: '-50% 0px -50% 0px', threshold: 0 });
+
+  document.querySelectorAll('.hero, .hero-zone').forEach(function(el){ io.observe(el); });
+  ['work', 'about', 'contact'].forEach(function(id){
+    var el = document.getElementById(id);
+    if (el) io.observe(el);
+  });
+});
+</script>
