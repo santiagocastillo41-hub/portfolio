@@ -1,6 +1,7 @@
 ---
 import { CV_URL, hasCV } from '../lib/cv';
 const EMAIL = 'santiagocastillo41@gmail.com';
+const LINKEDIN = 'https://www.linkedin.com/in/santiago-a-castillo/';
 ---
 
 <section class="contact" id="contact">
@@ -23,6 +24,7 @@ const EMAIL = 'santiagocastillo41@gmail.com';
 
       <div class="contact-alt">
         <a href={`mailto:${EMAIL}`}>Open in mail app</a>
+        <a href={LINKEDIN} target="_blank" rel="noopener me">LinkedIn<span class="sr-only"> (opens in a new tab)</span></a>
         {hasCV && (
           <a href={CV_URL} class="btn-cv" download>
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0l-4.5-4.5M12 15l4.5-4.5M5 19h14" /></svg>
