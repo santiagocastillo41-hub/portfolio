@@ -1,0 +1,161 @@
+---
+---
+
+<!-- Halftone background, home only. Decorative: three canvases filled once by
+     the script below, then moved with CSS (see .halftone in global.css). -->
+<div class="halftone" aria-hidden="true">
+  <canvas class="ht-dots"></canvas>
+  <canvas class="ht-pix-a"></canvas>
+  <canvas class="ht-pix-b"></canvas>
+</div>
+
+<script is:inline>
+(function(){
+  var root = document.querySelector('.halftone');
+  if (!root) return;
+  var canvases = root.querySelectorAll('canvas');
+  var dark = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;
+  var lastW = 0;
+
+  /* deterministic hash + value noise, so the pattern is the same on every visit */
+  function hh(ix, iy){
+    var n = (ix * 374761393 + iy * 668265263) | 0;
+    n = (n ^ (n >>> 13)) * 1274126177 | 0;
+    return ((n ^ (n >>> 16)) >>> 0) / 4294967295;
+  }
+  function sm(t){ return t * t * (3 - 2 * t); }
+  function noise(px, py){
+    var ix = Math.floor(px), iy = Math.floor(py), fx = sm(px - ix), fy = sm(py - iy);
+    var a = hh(ix, iy), b = hh(ix + 1, iy), c = hh(ix, iy + 1), d = hh(ix + 1, iy + 1);
+    return a + (b - a) * fx + (c - a) * fy + (a - b - c + d) * fx * fy;
+  }
+  function fbm(px, py){ return noise(px, py) * .6 + noise(px * 2.1, py * 2.1) * .28 + noise(px * 4.3, py * 4.3) * .12; }
+  function ss(a, b, t){ t = Math.min(1, Math.max(0, (t - a) / (b - a))); return t * t * (3 - 2 * t); }
+
+  /* swaths as segments in viewport fractions: x0, y0, x1, y1, width */
+  var BANDS = [
+    [-0.06, 1.06, 0.24, -0.06, 0.055],
+    [ 0.04, 1.10, 0.34,  0.52, 0.035],
+    [ 0.76, -0.06, 1.06, 0.58, 0.06],
+    [ 0.52, 1.10, 1.08,  0.60, 0.075],
+    [-0.04, 0.30, 0.16, -0.06, 0.03]
+  ];
+
+  var job = 0;
+  function draw(){
+    var my = ++job;
+    var VW = window.innerWidth, VH = window.innerHeight;
+    var W = Math.round(VW * 1.12), H = Math.round(VH * 1.12);
+    var DPR = Math.min(window.devicePixelRatio || 1, 2);
+    var narrow = VW < 700;
+    var ref = W;
+
+    var ctx = [];
+    canvases.forEach(function(c){
+      c.width = W * DPR; c.height = H * DPR;
+      var g = c.getContext('2d'); g.setTransform(DPR, 0, 0, DPR, 0, 0); g.clearRect(0, 0, W, H);
+      ctx.push(g);
+    });
+
+    /* sample the fields once on a 4px grid; both passes read from it */
+    var Q = narrow ? 3 : 4, cols = Math.ceil(W / Q) + 1, rows = Math.ceil(H / Q) + 1;
+    var CORE = new Float32Array(cols * rows), HALO = new Float32Array(cols * rows), WARM = new Float32Array(cols * rows);
+    var segs = BANDS.map(function(b){
+      return { ax: b[0] * W, ay: b[1] * H, vx: (b[2] - b[0]) * W, vy: (b[3] - b[1]) * H, w: b[4] * ref };
+    });
+    function fieldRow(r){ for (var q = 0; q < cols; q++){
+      var px = q * Q, py = r * Q, core = 0, halo = 0;
+      var wob = (fbm(px / 220, py / 220) - .5) * ref * .05;
+      for (var i = 0; i < segs.length; i++){
+        var s = segs[i];
+        var t = Math.max(0, Math.min(1, ((px - s.ax) * s.vx + (py - s.ay) * s.vy) / (s.vx * s.vx + s.vy * s.vy)));
+        var d = Math.hypot(px - s.ax - s.vx * t, py - s.ay - s.vy * t) + wob;
+        var k = d / s.w, h = d / (s.w * 2.2);
+        core = Math.max(core, Math.exp(-k * k));
+        halo = Math.max(halo, Math.exp(-h * h));
+      }
+      var dx = (px - W / 2) / (W * .5), dy = (py - H * .46) / (H * .5);
+      var mask = ss(narrow ? .62 : .5, narrow ? 1.05 : .95, Math.sqrt(dx * dx * .85 + dy * dy * 1.3));
+      var n = fbm(px / 120 + 10, py / 120 + 3);
+      var idx = r * cols + q;
+      CORE[idx] = core * mask * (.4 + .9 * n);
+      HALO[idx] = halo * mask * (.55 + .6 * n);
+      var wa = Math.exp(-(Math.pow((px - W * .08) / (W * .32), 2) + Math.pow((py - H * .95) / (H * .45), 2)));
+      var wb = Math.exp(-(Math.pow((px - W * .95) / (W * .3), 2) + Math.pow((py - H * .1) / (H * .4), 2)));
+      WARM[idx] = Math.min(1, (wa + wb) * 1.1) * (.6 + .6 * fbm(px / 180 + 40, py / 180));
+    }}
+    function at(A, px, py){ return A[Math.round(py / Q) * cols + Math.round(px / Q)]; }
+
+    var gray = dark ? '255,255,255' : '113,113,122';
+    var grayPix = dark ? '255,255,255' : '82,82,91';
+    var orange = dark ? '255,106,45' : '255,74,0';
+    var g = ctx[0];
+
+    /* soft wash in the corners */
+    function wash(){ [[.06, .95, .55, orange, .10], [.96, .08, .5, orange, .08], [.9, .92, .5, gray, dark ? .04 : .10], [.05, .1, .45, gray, dark ? .03 : .08]].forEach(function(o){
+      var gr = g.createRadialGradient(W * o[0], H * o[1], 0, W * o[0], H * o[1], W * o[2]);
+      gr.addColorStop(0, 'rgba(' + o[3] + ',' + o[4] + ')');
+      gr.addColorStop(1, 'rgba(' + o[3] + ',0)');
+      g.fillStyle = gr; g.fillRect(0, 0, W, H);
+    }); }
+
+    /* halftone dots */
+    var S = narrow ? 5 : 7;
+    var dotRows = Math.ceil(H / S);
+    function dotRow(j){ var y = S / 2 + j * S; for (var x = S / 2; x < W; x += S){
+      var dd = at(HALO, x, y); if (dd < .1) continue;
+      var isO = hh(x * 3 | 0, y * 5 | 0) < at(WARM, x, y) * .35;
+      g.fillStyle = isO ? 'rgba(' + orange + ',' + (.10 + .22 * dd) + ')' : 'rgba(' + gray + ',' + (dark ? .04 + .12 * dd : .06 + .17 * dd) + ')';
+      g.beginPath(); g.arc(x, y, Math.min(S * .46, dd * S * .5), 0, 6.283); g.fill();
+    }}
+
+    /* pixel texture, two variants that cross-fade for a slow shimmer */
+    function pixRow(p, off, r2){ for (var q2 = 0; q2 < cols; q2++){
+      var d2 = CORE[r2 * cols + q2]; if (d2 < .3) continue;
+      var px2 = q2 * Q, py2 = r2 * Q;
+      var cell = hh(q2 + off, r2 - off);
+      if (cell > (d2 - .25) * 1.5 * (.35 + fbm(px2 / 30 + off * .01, py2 / 30))) continue;
+      var isO2 = hh(px2 + 7 + off, py2 + 11) < WARM[r2 * cols + q2] * .5;
+      p.fillStyle = isO2 ? 'rgba(' + orange + ',' + (.22 + .3 * cell) + ')' : 'rgba(' + grayPix + ',' + (dark ? .05 + .12 * cell : .12 + .22 * cell) + ')';
+      p.fillRect(px2, py2, Q - 1, Q - 1);
+    }}
+
+    /* run in short slices so the main thread stays free for scroll and input */
+    var phases = [
+      [rows, fieldRow],
+      [1, wash],
+      [dotRows, dotRow],
+      [rows, function(r){ pixRow(ctx[1], 0, r); }],
+      [rows, function(r){ pixRow(ctx[2], 977, r); }]
+    ];
+    var ph = 0, n = 0;
+    function step(){
+      if (my !== job) return;
+      var end = performance.now() + 10;
+      while (ph < phases.length && performance.now() < end){
+        phases[ph][1](n++);
+        if (n >= phases[ph][0]){ ph++; n = 0; }
+      }
+      if (ph < phases.length) { setTimeout(step, 0); return; }
+      lastW = VW;
+      root.classList.add('is-ready');
+    }
+    step();
+  }
+
+  /* draw after the page has loaded so it never competes with the content */
+  function schedule(){
+    if ('requestIdleCallback' in window) requestIdleCallback(draw, { timeout: 1200 });
+    else setTimeout(draw, 200);
+  }
+  if (document.readyState === 'complete') schedule();
+  else window.addEventListener('load', schedule);
+
+  /* redraw only when the width changes (mobile address bars change height) */
+  var t;
+  window.addEventListener('resize', function(){
+    clearTimeout(t);
+    t = setTimeout(function(){ if (Math.abs(window.innerWidth - lastW) > 40) draw(); }, 250);
+  });
+})();
+</script>
