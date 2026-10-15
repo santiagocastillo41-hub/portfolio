@@ -2,7 +2,7 @@
 import '@fontsource-variable/schibsted-grotesk';
 import '../styles/global.css';
 import ScrollReveal from '../components/ScrollReveal.astro';
-import Ambient from '../components/Ambient.astro';
+import Halftone from '../components/Halftone.astro';
 
 interface Props {
 	title: string;
@@ -45,7 +45,7 @@ const ogImage = new URL(image, Astro.site);
 	</head>
 	<body>
 		<a class="skip-link" href="#main">Skip to content</a>
-		<Ambient />
+		<Halftone />
 		<slot />
 		<ScrollReveal />
 	</body>
