@@ -561,8 +561,8 @@ figcaption,
 .film-frame video{border-radius:inherit}
 
 /* ── FLOW VIDEOS ─────────────────────────────────────────── */
-.flowvid{display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:clamp(32px,6vw,96px);align-items:center;margin-top:var(--s-6)}
-.fv-phone{margin:0}
+.flowvid{display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(32px,6vw,96px);align-items:center;margin-top:var(--s-6)}
+.fv-phone{margin:0;width:min(380px,calc((100vh - 170px) * .4618));width:min(380px,calc((100svh - 170px) * .4618));min-width:240px}
 .fv-phone .fig-frame{border-radius:22px;background:#08090B;border-color:var(--line);overflow:hidden}
 .fv-phone video{display:block;width:100%;height:auto}
 .fv-steps{list-style:none;margin:0;padding:0;display:grid;gap:var(--s-5,40px)}
@@ -573,7 +573,7 @@ figcaption,
 .fc-n{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:7px;background:var(--accent-soft);color:var(--accent-text);font-size:12px;font-weight:650;margin-bottom:8px}
 @media (max-width:900px){
   .flowvid{grid-template-columns:1fr}
-  .fv-phone{max-width:300px;width:100%;margin-inline:auto}
+  .fv-phone{width:min(300px,100%,calc((100svh - 150px) * .4618));margin-inline:auto}
 }
 
 </style>
