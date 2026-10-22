@@ -1,4 +1,16 @@
 {
   "cleanUrls": true,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/work/cine-app",
+      "destination": "/work/matinee",
+      "permanent": true
+    },
+    {
+      "source": "/work/cine-app.html",
+      "destination": "/work/matinee",
+      "permanent": true
+    }
+  ]
 }
