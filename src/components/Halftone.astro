@@ -14,7 +14,7 @@
   var root = document.querySelector('.halftone');
   if (!root) return;
   var canvases = root.querySelectorAll('canvas');
-  var dark = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;
+  var dark = false; /* the site is light-only */
   var lastW = 0;
 
   /* deterministic hash + value noise, so the pattern is the same on every visit */
