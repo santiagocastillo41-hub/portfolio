@@ -5,6 +5,7 @@
    Kept as raw CSS custom properties (not Tailwind tokens).
    ============================================================ */
 :root {
+  color-scheme: light;
   /* color - 60/30/10 */
   --bg: #F4F4F5;
   --bg-2: #EAEAEC;
@@ -62,26 +63,7 @@
   --container: 1120px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #151517;
-    --bg-2: #1C1C1F;
-    --surface: #202024;
-    --text: #F4F4F5;
-    --text-2: #A1A1AA;
-    --text-3: #8E8E97;
-    --line: rgba(255, 255, 255, .09);
-    --line-2: rgba(255, 255, 255, .14);
-    --accent: #FF6A2D;
-    --accent-top: #D63D00;
-    --accent-bot: #C23300;
-    --accent-soft: rgba(255, 106, 45, .12);
-    --accent-line: rgba(255, 106, 45, .3);
-    --accent-text: #FF6A2D;
-    --sh-1: 0 1px 2px rgba(0, 0, 0, .3);
-    --sh-2: 0 14px 36px rgba(0, 0, 0, .45);
-  }
-}
+
 
 /* ============================================================
    BASE
@@ -164,17 +146,13 @@ body > * {
 @keyframes ht-fade-in { from { opacity: 0; } to { opacity: 1; } }
 @keyframes ht-fade-out { from { opacity: 1; } to { opacity: 0; } }
 
-@media (prefers-color-scheme: dark) {
-  .halftone.is-ready { opacity: .55; }
-}
+
 
 /* phones: the hero fills the width, so the texture steps back further */
 @media (max-width: 699px) {
   .halftone.is-ready { opacity: .6; }
 }
-@media (max-width: 699px) and (prefers-color-scheme: dark) {
-  .halftone.is-ready { opacity: .45; }
-}
+
 
 /* Headings: Schibsted Grotesk at semibold. Lighter than the 800 the Inter
    version used, so the orange clause in the hero carries the weight instead
