@@ -45,6 +45,9 @@ const ogImage = new URL(image, Astro.site);
 				.rise { opacity: 1 !important; transform: none !important; }
 			</style>
 		</noscript>
+		<!-- Vercel Web Analytics: page views, no cookies -->
+		<script is:inline>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+		<script is:inline defer src="/_vercel/insights/script.js"></script>
 	</head>
 	<body>
 		<a class="skip-link" href="#main">Skip to content</a>
