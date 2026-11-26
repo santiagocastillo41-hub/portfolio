@@ -1,25 +1,107 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Nav from '../components/Nav.astro';
-import Hero from '../components/Hero.astro';
-import Facts from '../components/Facts.astro';
-import Work from '../components/Work.astro';
-import About from '../components/About.astro';
-import Contact from '../components/Contact.astro';
-import Footer from '../components/Footer.astro';
+import { Image } from 'astro:assets';
+import '@fontsource-variable/schibsted-grotesk';
+import '../styles/editorial-home.css';
+import { CV_URL, hasCV } from '../lib/cv';
+import portrait from '../assets/home/portrait.jpg';
+import cce from '../assets/home/bancor-currency-exchange.jpg';
+import cbc from '../assets/home/bancor-business-cards.jpg';
+import cpd from '../assets/home/peopledesk.jpg';
+import cst from '../assets/home/strand.jpg';
+import cmt from '../assets/home/matinee.jpg';
+import cds from '../assets/home/peopledesk-design-system.jpg';
+
+const title = 'Santiago Castillo - Senior Product Designer';
+const description = 'Senior Product Designer in Córdoba, Argentina. Six years designing fintech, banking and B2B SaaS products, from problem framing to shipped flows and design systems.';
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL('/og/home.jpg', Astro.site);
 ---
 
-<Layout
-	title="Santiago Castillo - Senior Product Designer"
-	description="Senior Product Designer in Córdoba, Argentina. Six years designing fintech, banking and B2B SaaS products, from problem framing to shipped flows and design systems."
->
-	<Nav />
-	<main id="main">
-		<Hero />
-		<Facts />
-		<Work />
-		<About />
-		<Contact />
-	</main>
-	<Footer />
-</Layout>
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="color-scheme" content="light" />
+		<link rel="icon" href="/favicon.ico" sizes="32x32" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={canonical} />
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="Santiago Castillo" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:image" content={ogImage} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<!-- Vercel Web Analytics: page views, no cookies -->
+		<script is:inline>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+		<script is:inline defer src="/_vercel/insights/script.js"></script>
+	</head>
+	<body>
+<div class="wrap">
+  <nav class="bar"><a href="/">santiago castillo</a><span class="mid"><a href="#work">work</a><a href="#about">about</a><a href="/ai">ai</a></span><a href="#contact">contact</a></nav>
+
+  <section class="intro">
+    <h1>Banking and B2B software, designed from the problem up. Six years shaping fintech, banking and SaaS products with teams in Latin America and the US.</h1>
+    <div class="who">
+      <div class="me"><Image src={portrait} alt="Portrait of Santiago Castillo" widths={[240,480]} sizes="(max-width:700px) 100vw, 66vw" loading="eager"/>
+      <p>Santiago Castillo<span>Senior Product Designer<br>Córdoba, Argentina</span></p></div>
+      <div class="facts">
+        <p><span>Based in</span>Córdoba, Argentina</p>
+        <p><span>Overlap</span>GMT-3, EU and US hours</p>
+        <p><span>Experience</span>6+ years</p>
+        <p><span>Languages</span>Spanish, English</p>
+      </div>
+    </div>
+  </section>
+
+  <main id="work">
+    <div class="row nw">
+      <a class="item narrow" href="/work/bancor-currency-exchange"><figure><Image src={cce} alt="Bancor Currency Exchange" widths={[800,1600]} sizes="(max-width:700px) 100vw, 66vw" loading="eager"/></figure><div class="cap">Bancor Currency Exchange<span>In production, friends &amp; family testing · 2026</span></div></a>
+      <a class="item" href="/work/bancor-business-cards"><figure><Image src={cbc} alt="Bancor Business Cards" widths={[800,1600]} sizes="(max-width:700px) 100vw, 66vw" loading="eager"/></figure><div class="cap">Bancor Business Cards<span>B2B · Enterprise · 2026</span></div></a>
+    </div>
+    <div class="row wn">
+      <a class="item" href="/work/peopledesk-case-study"><figure><Image src={cpd} alt="PeopleDesk" widths={[800,1600]} sizes="(max-width:700px) 100vw, 66vw" loading="lazy"/></figure><div class="cap">PeopleDesk<span>B2B SaaS · 2024</span></div></a>
+      <a class="item narrow" href="/work/strand-case-study"><figure><Image src={cst} alt="Strand" widths={[800,1600]} sizes="(max-width:700px) 100vw, 66vw" loading="lazy"/></figure><div class="cap">Strand<span>Concept · 2026</span></div></a>
+    </div>
+    <div class="row nw">
+      <a class="item narrow" href="/work/matinee"><figure><Image src={cmt} alt="Matinee" widths={[800,1600]} sizes="(max-width:700px) 100vw, 66vw" loading="lazy"/></figure><div class="cap">Matinee<span>Self-initiated · 2026</span></div></a>
+      <a class="item" href="/work/peopledesk-design-system"><figure><Image src={cds} alt="PeopleDesk Design System" widths={[800,1600]} sizes="(max-width:700px) 100vw, 66vw" loading="lazy"/></figure><div class="cap">PeopleDesk Design System<span>Design Systems · 2024</span></div></a>
+    </div>
+  </main>
+
+  <section class="about" id="about">
+    <p class="label">about</p>
+    <div>
+      <p class="lead">I help product teams find clarity in complexity and turn it into experiences that are intuitive, purposeful and built to scale. Currently at Banco de Córdoba, leading UX for corporate banking.</p>
+      <div class="pillars">
+        <div><h3>Background</h3><p>Six years designing digital products across fintech, banking and SaaS, with startups and established companies in Latin America and the US.</p></div>
+        <div><h3>What I do</h3><p>UX strategy, interaction design and design systems, turning complex domains into products that are intuitive and built to scale.</p></div>
+        <div><h3>Problem first, screens second</h3><p>Good design starts with understanding the problem, not jumping to solutions. I work closely with developers, ask the hard questions early and care about systems thinking, because a great experience is never one screen.</p></div>
+        <div><h3>AI across the whole process</h3><p>I use AI to benchmark, audit flows, generate designs and variants with the design system components through Claude and Figma MCP, prototype in code and prepare the handoff. The decisions stay mine.</p><a class="ai-btn" href="/ai">How I work with AI <span aria-hidden="true">↗</span></a></div>
+      </div>
+      <ul class="cv">
+        <li><span>Banco de Córdoba</span><span>Senior Product Designer</span><span>2025–now</span></li>
+        <li><span>Devlights</span><span>Senior Product Designer</span><span>2022–2025</span></li>
+        <li><span>Upwork</span><span>Top Rated Freelance Designer</span><span>2021–2025</span></li>
+        <li><span>Madketing</span><span>UX/UI Designer</span><span>2020–2021</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <footer class="foot" id="contact">
+    <p class="label">contact</p>
+    <div>
+      <p class="big">Open to product design roles, remote or relocation.</p>
+      <p class="links"><a href="mailto:santiagocastillo41@gmail.com">santiagocastillo41@gmail.com</a><br><a href="https://www.linkedin.com/in/santiago-a-castillo" target="_blank" rel="noopener">LinkedIn</a>{hasCV && <><br><a href={CV_URL} download>Download CV</a></>}</p>
+    </div>
+    <small>©2026 Santiago Castillo</small>
+  </footer>
+</div>
+	</body>
+</html>
