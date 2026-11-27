@@ -15,7 +15,7 @@
 <meta property="og:title" content="How I work with AI, by Santiago Castillo">
 <meta property="og:description" content="How Santiago Castillo uses AI across the product design process: benchmark, UX audits, design with the system, prototypes and handoff.">
 <meta property="og:url" content="https://www.santicastillo.com/ai">
-<meta property="og:image" content="https://www.santicastillo.com/og/home-editorial.jpg">
+<meta property="og:image" content="https://www.santicastillo.com/og/home-red.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
@@ -27,9 +27,9 @@
 :root{
   --paper:#F4F4F5; --surface:#FFFFFF; --ink:#27272A; --ink-2:#6E6E78;
   --line:rgba(0,0,0,.08); --line-soft:rgba(0,0,0,.06);
-  --accent-from:#D63D00; --accent-to:#C23300;
+  --accent-from:#E2231A; --accent-to:#C41C14;
   --accent-grad:linear-gradient(180deg,var(--accent-from),var(--accent-to));
-  --accent-text:#C43100; --accent-soft:rgba(255,95,0,.10); --accent-edge:rgba(255,95,0,.22);
+  --accent-text:#E2231A; --accent-soft:rgba(226,35,26,.08); --accent-edge:rgba(226,35,26,.24);
   --block-bg:#27272A; --block-ink:#FFFFFF; --block-ink-2:rgba(255,255,255,.80);
   --brand:#0D574C; --brand-ink:#FFFFFF; --brand-ink-2:#C8E6DC;
   --brand-line:rgba(255,255,255,.16); --state-ok:#0D574C;
@@ -397,14 +397,14 @@ footer{padding:var(--s-8) 0 var(--s-12);border-top:1px solid var(--line);backgro
 /* ── EDITORIAL + INSTRUMENT LAYER ─────────────────────────────
    The editorial home, plus a small set of UI parts for the cases:
    bordered cards, mono labels, pills, compartment grids and tile
-   boards. Warm monochrome, one accent (#FF4A00), radius 12/8/999.
+   boards. Warm monochrome, one accent (#E2231A, Bauhaus red), radius 12/8/999.
    Spacing on an 8pt scale. Content is untouched.
    ───────────────────────────────────────────────────────────── */
 :root{
   --paper:#FFFFFF; --surface:#FFFFFF; --bone:#F7F6F3; --bone-2:#F1EFEA;
   --ink:#111111; --ink-2:#787774; --line:#EAEAEA; --line-soft:#EFEEEA;
-  --accent:#FF4A00; --accent-ink:#B83500; --accent-wash:#FFEEE6;
-  --accent-text:var(--accent-ink); --accent-soft:var(--accent-wash); --accent-edge:#FFD2BF;
+  --accent:#E2231A; --accent-ink:#E2231A; --accent-wash:#FDECEB;
+  --accent-text:var(--accent-ink); --accent-soft:var(--accent-wash); --accent-edge:#F7C6C3;
   --block-bg:#111111; --brand:#FFFFFF; --brand-ink:#111111; --brand-ink-2:#555; --brand-line:var(--line);
   --t-micro:11px; --t-small:13px; --t-body:16px; --t-lead:clamp(18px,1.75vw,22px);
   --t-h3:clamp(26px,2.7vw,34px); --t-h1:clamp(34px,3.7vw,47px); --t-data:clamp(48px,5vw,64px);
@@ -449,6 +449,7 @@ h3{font-size:var(--t-lead);letter-spacing:-.012em;line-height:1.2}
 .ed-bar .mid{justify-self:center;display:flex;gap:1.4em}
 .ed-bar > a:last-child{justify-self:end}
 .ed-bar a:hover{opacity:.55}
+.ed-bar .name{color:#E2231A}
 .back{border:1px solid var(--line);background:#fff;height:32px;padding:0 12px 0 10px;margin-bottom:32px;border-radius:var(--r-pill);
   font-family:var(--mono);font-size:var(--t-micro);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);font-weight:400}
 .back svg{color:var(--ink-2)}
@@ -621,7 +622,7 @@ footer{background:#fff;border-top:0;padding:24px 0 40px}
 @media (max-width:900px){.ai-hero{grid-template-columns:1fr;gap:16px}.orb-wrap{max-width:280px;margin-top:24px}}
 </style></head>
 <body>
-<nav class="nav"><div class="wrap ed-bar"><a href="/">santiago castillo</a><span class="mid"><a href="/#work">work</a><a href="/#about">about</a><a href="/ai">ai</a></span><a href="/#contact">contact</a></div></nav>
+<nav class="nav"><div class="wrap ed-bar"><a href="/" class="name">santiago castillo</a><span class="mid"><a href="/#work">work</a><a href="/#about">about</a><a href="/ai">ai</a></span><a href="/#contact">contact</a></div></nav>
 <main>
 <section class="hero"><div class="wrap ai-hero"><div class="ai-copy">
   <a class="back" href="/#about"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> about</a>
@@ -701,7 +702,7 @@ footer{background:#fff;border-top:0;padding:24px 0 40px}
     for(var j=0;j<list.length;j++){var q=list[j], d=(q[2]+1)/2, per=1/(1.9-q[2]*.45);
       var px=W/2+q[0]*R*per*1.25, py=W/2+q[1]*R*per*1.25, rad=q[3].s*(.45+d*.9)*(W/360);
       x.globalAlpha=.12+d*.78;
-      x.fillStyle=q[3].o?'#FF4A00':'#111111';
+      x.fillStyle=q[3].o?'#E2231A':'#111111';
       x.beginPath(); x.arc(px,py,rad,0,6.283); x.fill();}
     x.globalAlpha=1;
   }
